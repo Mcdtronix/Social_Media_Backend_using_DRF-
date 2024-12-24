@@ -7,7 +7,13 @@ from django.http import Http404
 from core.abstract.models import AbstractModel, AbstractManager
 
 # Create your models here.
-class UserManager(BaseUserManager):     
+class UserManager(BaseUserManager):
+    def get_object_by_public_id(self, public_id):
+        try:
+            return self.get(public_id=public_id)
+        except ObjectDoesNotExist:
+            raise ValueError(f"User with public_id '{public_id}' does not exist.")
+             
     def create_user(self, username, email, password=None, **kwargs):
         """Create and return a `User` with an email, phonenumber, username and password."""
         if username is None:
