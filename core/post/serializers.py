@@ -19,6 +19,12 @@ class PostSerializer(AbstractSerializer):
         rep["author"] = UserSerializers(author).data
         return rep
     
+    def update(self, instance, validate_data):
+        if not instance.edited:
+            validate_data['edited'] = True
+        instance = super().update(instance, validate_data)
+        return instance
+    
     class Meta:
         model = Post
         # list all the fields that can be listed in the request or a response

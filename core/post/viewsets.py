@@ -5,9 +5,10 @@ from core.post.serializers import PostSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.exceptions import NotFound
 
 class PostViewSet(AbstractViewSet):
-    http_method_names = ('post', 'get')
+    http_method_names = ('post', 'get', 'put', 'delete')
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSerializer
     
@@ -25,6 +26,13 @@ class PostViewSet(AbstractViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
+    def get_object(self):
+        try:
+            obj = Post.objects.get_object_by_public_id(self.kwargs['pk'])
+            return obj
+        except ValueError as e:
+            raise NotFound(str(e))
+        
 class UserPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_anonymous:
