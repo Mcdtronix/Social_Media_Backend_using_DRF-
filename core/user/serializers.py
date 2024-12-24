@@ -4,7 +4,8 @@ from core.abstract.serializers import AbstractSerializer
 
 
 class UserSerializers(AbstractSerializer):
-   
+
+    
     class Meta:
         model = User
         fields = ['id','username', 'first_name', 'last_name', 'email', 'is_active','created', 'updated']

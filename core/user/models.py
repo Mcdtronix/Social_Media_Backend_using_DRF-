@@ -7,7 +7,7 @@ from django.http import Http404
 from core.abstract.models import AbstractModel, AbstractManager
 
 # Create your models here.
-class UserManager(BaseUserManager, AbstractBaseUser):     
+class UserManager(BaseUserManager):     
     def create_user(self, username, email, password=None, **kwargs):
         """Create and return a `User` with an email, phonenumber, username and password."""
         if username is None:
